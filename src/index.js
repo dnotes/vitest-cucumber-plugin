@@ -82,7 +82,9 @@ export default function vitestCucumberPlugin() {
                 const gherkinDocument = id.match(/\.md$/) ? mdParser.parse(src) : gherkinParser.parse(src);
                 const pickles = Gherkin.compile(gherkinDocument, path, uuidFn);
 
-
+                // This should generate the Javascript code to be run by Vitest.
+                let code = generateFeature(config, gherkinDocument, pickles);
+                // return code;
 
                 return `
 import { describe, it, expect } from 'vitest';
