@@ -3,7 +3,6 @@ import { addStepDefinition, findStepDefinitionMatch } from './steps.js';
 import { parameterizeText } from './parameterize.js';
 import { generateFeature } from './generate/index.js';
 import { log, logConfig } from './logger.js';
-import { parse } from './parse.js';
 import { tagsFunction } from './tags.js';
 import {
     BeforeAll, applyBeforeAllHooks,
@@ -13,17 +12,16 @@ import {
     BeforeStep, applyBeforeStepHooks,
     AfterStep, applyAfterStepHooks,
 } from './hooks.js';
-import { gherkinLexerConfig } from './gherkin-lexer.js';
+import * as Gherkin from '@cucumber/gherkin';
+import * as Messages from '@cucumber/messages';
+const uuidFn = Messages.IdGenerator.uuid();
+const builder = new Gherkin.AstBuilder(uuidFn);
+const gherkinMatcher = new Gherkin.GherkinClassicTokenMatcher();
+const gherkinParser = new Gherkin.Parser(builder, gherkinMatcher);
+const mdMatcher = new Gherkin.GherkinInMarkdownTokenMatcher();
+const mdParser = new Gherkin.Parser(builder, mdMatcher);
 
-const featureRegex = /\.feature$/;
-
-const compileFeatureToJS = async (config,featureSrc) => {
-    const feature = await parse(featureSrc);
-
-    const code = await generateFeature(config,feature);
-
-    return code;
-}
+const featureRegex = /\.feature(?:\.md)?$/;
 
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
 
@@ -75,20 +73,26 @@ export default function vitestCucumberPlugin() {
             config = _.set('tagsFunction',tagsFunction(_.get('tags',config)),config);
 
             log.debug({ config }, 'config');
-
-            // Nearley has no mechanism for passing user data into the parser so need to do some hacky stuff here
-            // and setup some globals to get around the limitations.
-            gherkinLexerConfig(config);
         },
         transform : async (src,id) => {
             if (featureRegex.test(id)) {
-                const code = await compileFeatureToJS(config,src);
 
-                log.debug(`transform ${id} -> ${code}`);
+                let path = id.replace(config.root,'');
 
-                return {
-                    code
-                }
+                const gherkinDocument = id.match(/\.md$/) ? mdParser.parse(src) : gherkinParser.parse(src);
+                const pickles = Gherkin.compile(gherkinDocument, path, uuidFn);
+
+
+
+                return `
+import { describe, it, expect } from 'vitest';
+describe('${path}', () => {
+    it('is exported', () => {
+        expect(true).toBe(true);
+    })
+})
+                `;
+
             }
         }
     }

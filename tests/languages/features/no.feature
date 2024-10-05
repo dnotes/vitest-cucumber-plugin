@@ -1,3 +1,4 @@
+#language: no
 Egenskap: Gjett et ord
 
   Eksempel: Ordmaker starter et spill

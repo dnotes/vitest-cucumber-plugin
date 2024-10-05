@@ -15,15 +15,15 @@
     "main": "src/index.js",
     "type": "module",
     "scripts": {
-        "nearley": "./generate-parsers",
         "test": "./run-tests"
     },
     "dependencies": {
         "@cucumber/cucumber-expressions": "^16.1.2",
+        "@cucumber/gherkin": "^29.0.0",
+        "@cucumber/messages": "^22.0.0",
+        "@cucumber/tag-expressions": "^6.1.0",
         "glob": "^10.2.2",
         "lodash": "^4.17.21",
-        "moo": "^0.5.2",
-        "nearley": "^2.20.1",
         "pino": "^8.11.0"
     },
     "devDependencies": {
