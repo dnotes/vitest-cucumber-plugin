@@ -1,5 +1,4 @@
 import { ExpressionFactory, ParameterTypeRegistry, Expression } from '@cucumber/cucumber-expressions';
-import _ from 'lodash/fp';
 
 interface StepDefinition {
     expression: string;
@@ -35,18 +34,18 @@ export const addStepDefinition = (expression: string, f: (state: any, ...args: a
     steps.push({ expression, f, cucumberExpression });
 };
 
-const findStepDefinitionMatches = (step: Step): StepDefinitionMatch[] => {
-    const matchesMapper = _.map((match: any) => match.getValue());
-    const reducer = _.reduce((accumulator: StepDefinitionMatch[], stepDefinition: StepDefinition) => {
+const findStepDefinitionMatches = (step:Step): StepDefinitionMatch[] => {
+    return steps.reduce((accumulator: StepDefinitionMatch[], stepDefinition: StepDefinition) => {
         const matches = stepDefinition.cucumberExpression.match(step.text);
         if (matches) {
-            return _.concat(accumulator, { stepDefinition, parameters: matchesMapper(matches) });
+            return [...accumulator, {
+                stepDefinition,
+                parameters: matches.map((match: any) => match.getValue())
+            }];
         } else {
             return accumulator;
         }
     }, []);
-
-    return reducer(steps);
 };
 
 export const findStepDefinitionMatch = (step: Step): StepDefinitionMatch => {
