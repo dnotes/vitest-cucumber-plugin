@@ -1,5 +1,8 @@
 import { BeforeAll, applyBeforeAllHooks, Before, applyBeforeHooks, AfterAll, applyAfterAllHooks, After, applyAfterHooks, BeforeStep, applyBeforeStepHooks, AfterStep, applyAfterStepHooks } from './hooks';
+import { DataTable } from '@cucumber/cucumber';
+import { DocString } from './models/doc_string';
 export { setWorldConstructor, getWorldConstructor } from './world';
+export { DocString, DataTable };
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
 export { applyBeforeAllHooks, applyBeforeHooks, applyAfterAllHooks, applyAfterHooks, applyBeforeStepHooks, applyAfterStepHooks, };
 export declare const Given: (expression: string, f: (state: any, ...args: any[]) => any) => void;
