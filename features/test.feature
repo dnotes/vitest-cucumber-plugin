@@ -22,7 +22,7 @@ Feature: Basic Test
       And the property "info.step" should include 'the test "step" should include'
       And the property "info.line" should include "23"
 
-  Rule: DataTables and DocStrings must be as good or better than in @cucumber/cucumber
+  Rule: DataTables and DocStrings must work like in @cucumber/cucumber
     Because why re-invent what is pretty good
 
     Example: DataTables work
@@ -50,3 +50,19 @@ Feature: Basic Test
       Then the value "text" should include "# Title"
       And the variable "text.mediaType" should be "md"
       And the typeof "text" should be "object"
+
+  Rule: Scenario Outlines must work
+
+    Scenario Outline: Adding numbers: <int1> + <int2> = <sum>
+      Given I have a number <int1>
+      And I have a number <int2>
+      Then the sum should be <sum>
+
+      Examples:
+        | int1 | int2 | sum |
+        | 1    | 2    | 3   |
+        | 2    | 3    | 5   |
+        | 3    | 5    | 8   |
+        | 5    | 8    | 13  |
+        | 8    | 13   | 21  |
+        | 13   | 21   | 34  |
