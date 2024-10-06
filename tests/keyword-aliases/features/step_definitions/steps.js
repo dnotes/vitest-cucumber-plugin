@@ -1,6 +1,6 @@
 import { Given, When, Then, DataTable } from 'vitest-cucumber-plugin';
 import { expect } from 'vitest'
-import _ from 'lodash/fp';
+import _ from 'lodash-es';
 
 const addItem = (state,[ item ],data) => { return { items : _.concat(state.items ? state.items : [],item) } };
 

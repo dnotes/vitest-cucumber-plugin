@@ -6,6 +6,6 @@
     },
     "scripts": {
         "test": "npx vitest run",
-        "postinstall" : "ln -s ../../.. node_modules/vitest-cucumber-plugin"
+        "postinstall" : "ln -s ../../.. node_modules/quickpickle"
     }
 }

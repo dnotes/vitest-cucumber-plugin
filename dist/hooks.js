@@ -1,4 +1,4 @@
-import _ from 'lodash/fp';
+import { isFunction, isString, isObject, concat } from 'lodash-es';
 import { tagsFunction } from './tags';
 const allHooks = {
     beforeAll: [],
@@ -29,13 +29,13 @@ const applyHooks = async (hooksName, state, tags) => {
 };
 const addHook = (hooksName, opts, f) => {
     let hookOpts;
-    if (_.isFunction(opts)) {
+    if (isFunction(opts)) {
         hookOpts = { name: '', f: opts, tagsFunction: () => true };
     }
-    else if (_.isString(opts)) {
+    else if (isString(opts)) {
         hookOpts = { name: opts, f: f, tagsFunction: () => true };
     }
-    else if (_.isObject(opts)) {
+    else if (isObject(opts)) {
         hookOpts = opts;
         hookOpts.f = f;
     }
@@ -43,7 +43,7 @@ const addHook = (hooksName, opts, f) => {
         throw new Error('Unknown options argument: ' + JSON.stringify(opts));
     }
     hookOpts.tagsFunction = tagsFunction(hookOpts.tags);
-    allHooks[hooksName] = _.concat(allHooks[hooksName], hookOpts);
+    allHooks[hooksName] = concat(allHooks[hooksName], hookOpts);
 };
 export const BeforeAll = (opts, f) => { addHook('beforeAll', opts, f); };
 export const applyBeforeAllHooks = (state, tags) => applyHooks('beforeAll', state, tags);

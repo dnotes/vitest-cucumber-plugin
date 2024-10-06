@@ -1,6 +1,6 @@
 import * as testUtils from '@vue/test-utils';
 import { v4 as uuid } from 'uuid';
-import _ from 'lodash/fp.js';
+import _ from 'lodash-es';
 
 const components = {};
 

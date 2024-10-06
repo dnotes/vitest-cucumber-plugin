@@ -1,5 +1,5 @@
-import _ from 'lodash/fp';
 import { addStepDefinition, findStepDefinitionMatch } from './steps';
+import { get, defaults } from 'lodash-es';
 import { tagsFunction } from './tags';
 import {
   BeforeAll, applyBeforeAllHooks,
@@ -52,14 +52,7 @@ interface StepDefinitionMatch {
 }
 
 export const qp = (step: string, state: any, line: number, data?: any): any => {
-  const stepObj: Step = {
-    text: step,
-    type: {
-      type: 'given', // Default type, you might want to determine this dynamically
-      name: 'Given'
-    }
-  };
-  const stepDefinitionMatch = findStepDefinitionMatch(stepObj);
+  const stepDefinitionMatch = findStepDefinitionMatch(step);
   return stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
 };
 
@@ -83,12 +76,12 @@ export const quickpickle = function() {
   return {
     name: 'vitest-cucumber-transform',
     configResolved: (resolvedConfig: ResolvedConfig) => {
-      config = _.defaults(
+      config = defaults(
         { root: resolvedConfig.root, language: 'en' },
-        _.get('test.cucumber', resolvedConfig)
+        get(resolvedConfig, 'test.cucumber')
       ) as PluginConfig;
 
-      config.tagsFunction = tagsFunction(_.get('tags', config));
+      config.tagsFunction = tagsFunction(get(config, 'tags'));
     },
     transform: async (src: string, id: string): Promise<string | undefined> => {
       if (featureRegex.test(id)) {

@@ -1,6 +1,6 @@
 import { Given, When, Then } from 'vitest-cucumber-plugin';
 import { expect } from 'vitest'
-import _ from 'lodash/fp';
+import _ from 'lodash-es';
 
 Given('today is Sunday', function () {
     return { today : 'Sunday' };

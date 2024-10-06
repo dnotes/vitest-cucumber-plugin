@@ -1,4 +1,4 @@
-import _ from 'lodash/fp';
+import { isFunction, isString, isObject, concat } from 'lodash-es'
 import { tagsFunction } from './tags';
 
 interface Hook {
@@ -45,11 +45,11 @@ const applyHooks = async (hooksName: string, state: any, tags: string[]): Promis
 const addHook = (hooksName: string, opts: string | Hook | ((state: any) => any), f?: (state: any) => any): void => {
     let hookOpts: Hook;
 
-    if (_.isFunction(opts)) {
+    if (isFunction(opts)) {
         hookOpts = { name: '', f: opts, tagsFunction: () => true };
-    } else if (_.isString(opts)) {
+    } else if (isString(opts)) {
         hookOpts = { name: opts, f: f!, tagsFunction: () => true };
-    } else if (_.isObject(opts)) {
+    } else if (isObject(opts)) {
         hookOpts = opts as Hook;
         hookOpts.f = f!;
     } else {
@@ -58,7 +58,7 @@ const addHook = (hooksName: string, opts: string | Hook | ((state: any) => any),
 
     hookOpts.tagsFunction = tagsFunction(hookOpts.tags);
 
-    allHooks[hooksName] = _.concat(allHooks[hooksName], hookOpts);
+    allHooks[hooksName] = concat(allHooks[hooksName], hookOpts);
 };
 
 export const BeforeAll = (opts: string | Hook | ((state: any) => any), f?: (state: any) => any): void => { addHook('beforeAll', opts, f) };

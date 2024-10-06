@@ -1,6 +1,6 @@
 import { Given, When, Then, DataTable } from 'vitest-cucumber-plugin';
 import { expect } from 'vitest'
-import _ from 'lodash/fp';
+import _ from 'lodash-es';
 
 Given('the following data:',(state,params,data) => {
     return DataTable(data);

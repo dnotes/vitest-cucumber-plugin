@@ -1,5 +1,5 @@
 import { BeforeAll, AfterAll, Before, After, BeforeStep, AfterStep } from 'vitest-cucumber-plugin';
-import _ from 'lodash/fp.js';
+import _ from 'lodash-es';
 
 Before({ tags : '@hooks and not @nobefore', name: 'add before' },(state) => {
     return _.set('beforeTags',_.concat(_.getOr([],'beforeTags',state),'beforeTags'),state);

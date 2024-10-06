@@ -2,7 +2,7 @@ import { Given, When, Then } from 'vitest-cucumber-plugin';
 import Test from '../../src/test.vue';
 import { mount, get } from '../support/components.js';
 import { expect } from 'vitest';
-import _ from 'lodash/fp.js';
+import _ from 'lodash-es';
 
 Given('I have a test component', (state,params,data) => {
     return _.set('test',mount(Test),state);
