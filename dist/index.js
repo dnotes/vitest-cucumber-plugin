@@ -9,9 +9,13 @@ export { applyBeforeAllHooks, applyBeforeHooks, applyAfterAllHooks, applyAfterHo
 export const Given = addStepDefinition;
 export const When = addStepDefinition;
 export const Then = addStepDefinition;
-export const qp = (step, state, line, data) => {
+export const qp = async (step, state, line, data) => {
     const stepDefinitionMatch = findStepDefinitionMatch(step);
-    return stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
+    state.info.step = step;
+    state.info.line = line;
+    applyBeforeStepHooks(state);
+    await stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
+    applyAfterStepHooks(state);
 };
 const defaultConfig = {
     import: ['features/*.steps.{ts,js,mjs}']

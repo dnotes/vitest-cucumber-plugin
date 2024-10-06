@@ -3,7 +3,7 @@ import { Given, Then } from "../dist";
 
 Given("I run the tests", () => {});
 
-Then("they should pass", () => {
+Then("the tests should pass", () => {
   expect(true).to.be.true;
 })
 
@@ -16,6 +16,6 @@ Then('the sum should be {int}', (world, int) => {
   expect(world.numbers.reduce((a,b) => a + b, 0)).toBe(int)
 })
 
-Then('the test {string} should include {string}', (world, prop, value) => {
-  expect(world.info[prop]).toContain(value)
+Then('the test {string} should include/contain {string}', (world, prop, value) => {
+  expect(world.info[prop].toString()).toContain(value)
 })

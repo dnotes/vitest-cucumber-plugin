@@ -5,6 +5,7 @@ export interface QuickPickleWorldInterface {
     tags: string[],
     rule?: string,
     step?: string,
+    line?: number,
   }
   common: {
     [key: string]: any

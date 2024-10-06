@@ -166,7 +166,7 @@ ${sp}    let state = await ${initFn}(\`${name}\`, ['${tags.join("', '") || ''}']
 ${child.scenario?.steps.map((step,i) => {
   let text = step.text.replace(/`/g, '\\`')
   text = replaceParamNames(text,true)
-  return `${sp}    qp(\`${text}\`, state, ${step.location.line});`
+  return `${sp}    await qp(\`${text}\`, state, ${step.location.line});`
 }).join('\n')
 }
 ${sp}    await afterScenario(state);
@@ -191,14 +191,14 @@ function renderSteps(steps:Step[], config:QuickPickleConfig, sp = '  ') {
       let data = JSON.stringify(step.dataTable.rows.map(r => {
         return r.cells.map(c => c.value)
       }))
-      return `${sp}qp('${q(step.text)}', state, ${step.location.line}, ${data});`
+      return `${sp}await qp('${q(step.text)}', state, ${step.location.line}, ${data});`
     }
     else if (step.docString) {
       let data = JSON.stringify(pick(step.docString, ['content','mediaType']))
-      return `${sp}qp('${q(step.text)}', state, ${step.location.line}, ${data});`
+      return `${sp}await qp('${q(step.text)}', state, ${step.location.line}, ${data});`
     }
 
-    return `${sp}qp('${q(step.text)}', state, ${step.location.line});`
+    return `${sp}await qp('${q(step.text)}', state, ${step.location.line});`
   }).join('\n')
 }
 

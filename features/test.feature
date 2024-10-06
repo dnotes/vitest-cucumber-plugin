@@ -2,7 +2,7 @@ Feature: Basic Test
 
   Scenario: It works
     Given I run the tests
-    Then they should pass
+    Then the tests should pass
 
   Scenario: It has a world
     Given I have a number 2
@@ -13,10 +13,11 @@ Feature: Basic Test
     This is so we can know what is happening!
 
     @tag-test
-    Scenario: The world has info
+    Example: The world has info
       Given I run the tests
       Then the test "feature" should include "Basic Test"
       And the test "rule" should include "Every step must have access to information about itself"
       And the test "scenario" should include "The world has info"
       And the test "tags" should include "@tag-test"
-      # And the test "step" should include 'the test "step" should include'
+      And the test "step" should include 'the test "step" should include'
+      And the test "line" should include "23"

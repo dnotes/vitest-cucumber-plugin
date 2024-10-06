@@ -60,9 +60,13 @@ interface StepDefinitionMatch {
   parameters: any[];
 }
 
-export const qp = (step: string, state: any, line: number, data?: any): any => {
+export const qp = async (step: string, state: any, line: number, data?: any): Promise<any> => {
   const stepDefinitionMatch = findStepDefinitionMatch(step);
-  return stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
+  state.info.step = step
+  state.info.line = line
+  applyBeforeStepHooks(state);
+  await stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
+  applyAfterStepHooks(state);
 };
 
 const defaultConfig: QuickPickleConfig = {

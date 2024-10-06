@@ -13,7 +13,7 @@ export type QuickPickleConfig = {
      */
     import: string | string[];
 };
-export declare const qp: (step: string, state: any, line: number, data?: any) => any;
+export declare const qp: (step: string, state: any, line: number, data?: any) => Promise<any>;
 interface ResolvedConfig {
     test?: {
         cucumber?: Partial<QuickPickleConfig>;
