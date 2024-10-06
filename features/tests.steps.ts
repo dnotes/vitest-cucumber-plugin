@@ -2,7 +2,7 @@ import { expect } from "vitest";
 import { Given, Then, When } from "../src";
 import { DataTable } from "@cucumber/cucumber";
 import { clone, get } from "lodash-es";
-import DocString from "../src/models/doc_string";
+import { DocString } from "../src/models/doc_string";
 
 Given("I run the tests", () => {});
 
