@@ -1,6 +1,5 @@
 import _ from 'lodash/fp.js';
 import { addStepDefinition, findStepDefinitionMatch } from './steps.js';
-import { parameterizeText } from './parameterize.js';
 import { generateFeature } from './generate/index.js';
 import { tagsFunction } from './tags.js';
 import {
