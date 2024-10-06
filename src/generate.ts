@@ -1,6 +1,7 @@
 import type { FeatureChild, GherkinDocument, RuleChild, Step } from "@cucumber/messages";
+import type { QuickPickleConfig } from '.'
 
-export function renderFeature(gherkinDocument:GherkinDocument, config:any = {}) {
+export function renderFeature(gherkinDocument:GherkinDocument, config:QuickPickleConfig = {}) {
 
   if (!gherkinDocument?.feature || !gherkinDocument.feature?.children?.length) {
     return ''
@@ -70,7 +71,7 @@ function isRule(child:FeatureChild|RuleChild): child is FeatureChild {
   return child.hasOwnProperty('rule')
 }
 
-function renderChildren(children:RuleChild[]|FeatureChild[], config = {}, sp = '  ') {
+function renderChildren(children:RuleChild[]|FeatureChild[], config:QuickPickleConfig, sp = '  ') {
 
   const output = {
     backgroundSteps: '',
@@ -95,7 +96,7 @@ function renderChildren(children:RuleChild[]|FeatureChild[], config = {}, sp = '
   return output
 }
 
-function renderRule(child:FeatureChild, config, sp = '  ') {
+function renderRule(child:FeatureChild, config:QuickPickleConfig, sp = '  ') {
   let { backgroundSteps, children } = renderChildren(child.rule!.children as RuleChild[], config, sp + '  ')
 
   return `
@@ -114,7 +115,7 @@ ${sp}});
 `
 }
 
-function renderScenario(child:FeatureChild, config, sp = '  ') {
+function renderScenario(child:FeatureChild, config:QuickPickleConfig, sp = '  ') {
   let initFn = sp.length > 4 ? 'initRuleScenario' : 'initScenario'
   return `
 ${sp}test('${child.scenario!.keyword}: ${child.scenario!.name}', async () => {
@@ -125,7 +126,7 @@ ${sp}});
 `
 }
 
-function renderSteps(steps:Step[], config, sp = '  ') {
+function renderSteps(steps:Step[], config:QuickPickleConfig, sp = '  ') {
   return steps.map(step => {
     return `${sp}  qp('${step.text}', state, ${step.location.line});`
   }).join('\n')
