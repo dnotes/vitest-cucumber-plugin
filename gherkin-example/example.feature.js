@@ -9,9 +9,6 @@ import {
   applyAfterStepHooks,
   getWorldConstructor,
 } from 'quickpickle';
-import { log, logConfig } from 'quickpickle';
-
-logConfig({})
 
 let World = getWorldConstructor()
 

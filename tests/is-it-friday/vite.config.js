@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
         plugins: [vitestCucumberPlugin()],
         test: {
             include : [ '**/*.feature' ],
-            cucumber : { log : { level } },
+            cucumber : { },
         },
     }
 });

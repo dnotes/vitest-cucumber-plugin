@@ -3,12 +3,11 @@ import vitestCucumberPlugin from 'vitest-cucumber-plugin';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig(({ mode }) => {
-    const level = (mode === 'test-debug') ? 'debug' : 'warn';
     return {
         plugins: [vue(),vitestCucumberPlugin()],
         test: {
             include : [ '**/*.feature' ],
-            cucumber : { log : { level } },
+            cucumber : { },
             environment : 'jsdom',
         },
     }

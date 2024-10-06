@@ -1,34 +1,26 @@
 import _ from 'lodash/fp.js';
-import { log } from '../logger.js';
 import { glob } from 'glob';
 
+// TODO: This should be configurable.
 const findJsFiles = async () => glob('features/**/*.js');
 
-export const generateFeature = async (config,gherkinDocument,pickles) => {
+export const generateFeature = async (config, gherkinDocument, pickles) => {
+    const feature = gherkinDocument.feature;
     const name = feature.name;
-    const statements = feature.statements;
+    const featureTags = feature.tags.map(tag => tag.name);
 
-    const testStatements = _.reduce((testStatements,statement) => {
-        if (feature.background) {
-            statement = _.set('background',feature.background,statement);
-        }
+    const testStatements = pickles.map(pickle => {
+        const pickleTags = pickle.tags.map(tag => tag.name);
+        const tags = _.uniq([...featureTags, ...pickleTags]);
 
-        statement = _.set('tags',_.concat(feature.tags,statement.tags),statement);
+        return generateScenario(config, pickle, tags);
+    }).join('\n\n');
 
-        if (statement.type.type === 'example') {
-            return testStatements + generateExample(config,statement);
-        } else if (statement.type.type === 'scenarioOutline') {
-            return testStatements + generateScenarioOutline(config,statement);
-        } else if (statement.type.type === 'rule') {
-            return testStatements + generateRule(config,statement);
-        }
-    },'')(statements);
-
-    const skip = shouldSkip(config,feature.tags) ? '.skip' : '';
+    const skip = shouldSkip(config, featureTags) ? '.skip' : '';
     const configStr = JSON.stringify(config);
-    const tagsStr = JSON.stringify(feature.tags);
+    const tagsStr = JSON.stringify(featureTags);
 
-    const jsFilesImportReducer = (imports,file) => {
+    const jsFilesImportReducer = (imports, file) => {
         file = file.slice('features/'.length);
         return imports+`
 import './${file}';`;
@@ -47,9 +39,6 @@ import {
     applyAfterStepHooks,
 } from 'vitest-cucumber-plugin';
 import { readdir } from 'node:fs/promises';
-import { log, logConfig } from 'vitest-cucumber-plugin';${jsFilesImport}
-
-logConfig(${JSON.stringify(config.log)});
 
 var state = {};
 
@@ -62,8 +51,9 @@ afterAll(async () => {
 });
 
 // tags : ${tagsStr}
-describe${skip}('${escape(feature.type.name)}: ${escape(name)}', () => {
-${testStatements}});
+describe${skip}('${escape(feature.keyword)}: ${escape(name)}', () => {
+${testStatements}
+});
 `;
 
     return code;
@@ -73,12 +63,10 @@ export const escape = (str) => str.replace(/'/g,"\\'");
 
 export const shouldSkip = (config,tags) => {
     const result = !config.tagsFunction(tags);
-    log.debug(`shouldSkip? ${result} tags: ${JSON.stringify(tags)}`);
     return result;
 }
 
 export const generateRule = (config,rule) => {
-    log.debug(`generateRule config: ${JSON.stringify(config)} rule: ${JSON.stringify(rule)}`);
 
     const examplesCode = _.reduce((examplesCode,example) => {
         return examplesCode + generateExample(config,example);
@@ -109,7 +97,6 @@ const createParameterMap = (parameters,values) => {
 const generateAllTests = (steps,parameters,parameterValues,tags) => {
     const allTests = _.reduce((allTests,values) => {
         const parameterMap = createParameterMap(parameters,values);
-        log.debug(`parameterMap : ${JSON.stringify(parameterMap)}`);
 
         const tests = generateTests(steps,parameterMap,tags,'    ');
 
@@ -122,12 +109,9 @@ const generateAllTests = (steps,parameters,parameterValues,tags) => {
 }
 
 export const generateExamples = (config,steps,examplesStatement) => {
-    log.debug(`generateExamples steps:${JSON.stringify(steps)} examples: ${JSON.stringify(examplesStatement)}`);
-
     const parameters = _.head(examplesStatement.dataTable);
     const parameterValues = _.tail(examplesStatement.dataTable);
 
-    log.debug(`generateExamples parameters:${JSON.stringify(parameters)} parameterValues: ${JSON.stringify(parameterValues)}`);
 
     const skip = shouldSkip(config,examplesStatement.tags) ? '.skip' : '';
 
@@ -140,7 +124,6 @@ export const generateExamples = (config,steps,examplesStatement) => {
 }
 
 export const generateExample = (config,example) => {
-    log.debug(`generateExample config: ${JSON.stringify(config)} example: ${JSON.stringify(example)}`);
     var tests = '';
 
     const steps = _.has('background.steps',example) ? _.concat(example.background.steps,example.steps) : example.steps;
@@ -175,7 +158,6 @@ ${examplesStatements}
 }
 
 export const generateTests = (steps,parameterMap,tags,extraIndent) => {
-    log.debug(`generateTests steps : ${JSON.stringify(steps)}`);
     const tagsStr = JSON.stringify(tags);
     const indent = extraIndent ? extraIndent : '';
     let tests = `
