@@ -15,6 +15,8 @@ const featureRegex = /\.feature(?:\.md)?$/;
 
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
 
+export { setWorldConstructor, getWorldConstructor } from './world';
+
 export {
   applyBeforeAllHooks,
   applyBeforeHooks,
@@ -74,7 +76,7 @@ export const quickpickle = function() {
   let config: PluginConfig;
 
   return {
-    name: 'vitest-cucumber-transform',
+    name: 'quickpickle-transform',
     configResolved: (resolvedConfig: ResolvedConfig) => {
       config = defaults(
         { root: resolvedConfig.root, language: 'en' },

@@ -1,5 +1,6 @@
 import { BeforeAll, applyBeforeAllHooks, Before, applyBeforeHooks, AfterAll, applyAfterAllHooks, After, applyAfterHooks, BeforeStep, applyBeforeStepHooks, AfterStep, applyAfterStepHooks } from './hooks';
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
+export { setWorldConstructor, getWorldConstructor } from './world';
 export { applyBeforeAllHooks, applyBeforeHooks, applyAfterAllHooks, applyAfterHooks, applyBeforeStepHooks, applyAfterStepHooks, };
 export declare const Given: (expression: string, f: (state: any, ...args: any[]) => any) => void;
 export declare const When: (expression: string, f: (state: any, ...args: any[]) => any) => void;
