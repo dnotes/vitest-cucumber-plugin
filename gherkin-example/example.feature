@@ -2,47 +2,47 @@
 # language: en
 
 @tag @multiple_tags
-Feature: Comprehensive Gherkin Syntax Example
+Feature: QuickPickle's Comprehensive Gherkin Syntax Example
   This is a description of the feature.
   It can span multiple lines and provides context.
 
-  Background: Common setup steps
+  Background: Common setup steps'
     Given a common precondition
     And another common precondition
 
   @scenario_tag
-  Scenario: Basic scenario example
-    Given an initial context
-    When an action is performed
-    Then a verifiable outcome is achieved
+  Scenario: Basic scenario example'
+    Given an initial context'
+    When an action is performed'
+    Then a verifiable outcome is achieved'
 
-  Scenario Outline: Parameterized scenario
-    Given a precondition with <parameter>
-    When an action is taken with <another_parameter>
-    Then the outcome is <expected_result>
+  Scenario Outline: Parameterized scenario for <parameter>, '<another_parameter>'
+    Given a 'precondition' with <parameter>
+    When an 'action' is taken with <another_parameter>
+    Then the 'outcome' is <expected_result>
 
     Examples:
       | parameter | another_parameter | expected_result |
-      | value1    | value2            | result1         |
-      | value3    | value4            | result2         |
+      | value1'   | value2'           | result1'        |
+      | value3`   | value4`           | result2`        |
 
   @data_table
   Scenario: Scenario with various DataTable types
     Given a list of strings:
-      | Apple  |
-      | Banana |
-      | Cherry |
+      | Apple'  |
+      | Banana` |
+      | Cherry" |
     And a list of integers:
       | 1 |
       | 2 |
       | 3 |
     And a map of string to string:
-      | key1 | value1 |
-      | key2 | value2 |
+      | key1' | value1' |
+      | key2` | value2" |
     And a list of maps:
-      | name   | age | role    |
-      | Alice  | 30  | admin   |
-      | Bob    | 25  | user    |
+      | name'    | age` | role"    |
+      | Alice'   | 30   | admin"   |
+      | Bob`     | 25   | user"    |
     And a map of string to list of string:
       | fruits     | Apple, Banana, Cherry |
       | vegetables | Carrot, Potato, Onion |
@@ -50,19 +50,19 @@ Feature: Comprehensive Gherkin Syntax Example
     Then the system behaves correctly
 
   @rule_tag
-  Rule: Business rule description
-    This is an example of a business rule
+  Rule: Business rule description'
+    This is an example of a business rule'
 
-    Background: Rule-specific setup
+    Background: Rule-specific setup'
       Given a specific rule context
       And another specific rule context
 
-    Example: Rule example scenario
+    Example: Rule example scenario'
       Given a specific rule context
       When a rule-related action occurs
       Then the rule outcome is observed
 
-  Scenario: Also a rule example
+  Scenario: Also a rule example'
     Given a Rule statement
     When a scenario is below it
     Then it is a child of the Rule, even if it isn't indented

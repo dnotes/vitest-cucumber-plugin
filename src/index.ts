@@ -9,16 +9,7 @@ import {
   BeforeStep, applyBeforeStepHooks,
   AfterStep, applyAfterStepHooks,
 } from './hooks';
-import * as Gherkin from '@cucumber/gherkin';
-import * as Messages from '@cucumber/messages';
-import { renderFeature } from './generate';
-
-const uuidFn = Messages.IdGenerator.uuid();
-const builder = new Gherkin.AstBuilder(uuidFn);
-const gherkinMatcher = new Gherkin.GherkinClassicTokenMatcher();
-const gherkinParser = new Gherkin.Parser(builder, gherkinMatcher);
-const mdMatcher = new Gherkin.GherkinInMarkdownTokenMatcher();
-const mdParser = new Gherkin.Parser(builder, mdMatcher);
+import { renderGherkin } from './render';
 
 const featureRegex = /\.feature(?:\.md)?$/;
 
@@ -101,8 +92,7 @@ export const quickpickle = function() {
     },
     transform: async (src: string, id: string): Promise<string | undefined> => {
       if (featureRegex.test(id)) {
-        const gherkinDocument = id.match(/\.md$/) ? mdParser.parse(src) : gherkinParser.parse(src);
-        return renderFeature(gherkinDocument, config)
+        return renderGherkin(src, config, id.match(/\.md$/) ? true : false)
       }
     }
   };
