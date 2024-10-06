@@ -10,7 +10,7 @@ Feature: Basic Test
     Then the sum should be 5
 
   Rule: Every step must have access to information about itself
-    This is so we can know what is happening!
+    This is so we can know what is happening when writing step definitions
 
     @tag-test
     Example: The world has info

@@ -7,7 +7,7 @@ export default {
   },
   resolve: {
     alias: {
-      'quickpickle': __dirname + '/dist/index',
+      'quickpickle': __dirname + '/src', // only needed because this is the quickpickle repository
     }
   }
 };

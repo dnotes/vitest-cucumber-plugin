@@ -22,7 +22,8 @@
     "scripts": {
         "build": "tsc",
         "type-check": "tsc --noEmit",
-        "test": "npm run build && vitest --run"
+        "test:watch": "vitest",
+        "test": "vitest --run"
     },
     "dependencies": {
         "@cucumber/cucumber-expressions": "^16.1.2",

@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { Given, Then } from "../dist";
+import { Given, Then } from "../src";
 
 Given("I run the tests", () => {});
 
