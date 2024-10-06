@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitest/config'
-import vitestCucumberPlugin from 'vitest-cucumber-plugin';
+import quickpickle from 'quickpickle';
 
 export default defineConfig({
-    plugins: [vitestCucumberPlugin()],
+    plugins: [quickpickle()],
     test: {
         include : [ '**/*.feature' ],
     },

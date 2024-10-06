@@ -1,4 +1,4 @@
-import { BeforeAll, AfterAll, Before, After, BeforeStep, AfterStep } from 'vitest-cucumber-plugin';
+import { BeforeAll, AfterAll, Before, After, BeforeStep, AfterStep } from 'quickpickle';
 import _ from 'lodash-es';
 
 BeforeAll('add beforeAll1',(state) => {

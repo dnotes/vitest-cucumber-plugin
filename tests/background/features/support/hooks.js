@@ -1,3 +1,3 @@
-import { Before } from 'vitest-cucumber-plugin';
+import { Before } from 'quickpickle';
 
 Before('clear state before scenarios',async (state) => { return {} });

@@ -1,4 +1,4 @@
-import { Given, When, Then } from 'vitest-cucumber-plugin';
+import { Given, When, Then } from 'quickpickle';
 
 When('Ordmaker starter et spill', (state,params,data) => {
     return state;

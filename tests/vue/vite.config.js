@@ -1,10 +1,10 @@
 import { defineConfig } from 'vitest/config'
-import vitestCucumberPlugin from 'vitest-cucumber-plugin';
+import quickpickle from 'quickpickle';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig(({ mode }) => {
     return {
-        plugins: [vue(),vitestCucumberPlugin()],
+        plugins: [vue(),quickpickle()],
         test: {
             include : [ '**/*.feature' ],
             cucumber : { },

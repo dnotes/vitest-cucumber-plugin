@@ -1,4 +1,4 @@
-import { Given, When, Then } from 'vitest-cucumber-plugin';
+import { Given, When, Then } from 'quickpickle';
 import { expect } from 'vitest'
 import _ from 'lodash-es';
 

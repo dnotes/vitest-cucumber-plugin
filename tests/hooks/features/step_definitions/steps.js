@@ -1,4 +1,4 @@
-import { Given, When, Then, DataTable } from 'vitest-cucumber-plugin';
+import { Given, When, Then, DataTable } from 'quickpickle';
 import { expect } from 'vitest'
 import _ from 'lodash-es';
 

@@ -1,4 +1,4 @@
-import { Given, When, Then } from 'vitest-cucumber-plugin';
+import { Given, When, Then } from 'quickpickle';
 import Test from '../../src/test.vue';
 import { mount, get } from '../support/components.js';
 import { expect } from 'vitest';
