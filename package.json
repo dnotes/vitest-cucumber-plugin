@@ -26,6 +26,7 @@
         "test": "vitest --run"
     },
     "dependencies": {
+        "@cucumber/cucumber": "^11.0.1",
         "@cucumber/cucumber-expressions": "^16.1.2",
         "@cucumber/gherkin": "^29.0.0",
         "@cucumber/messages": "^22.0.0",

@@ -10,8 +10,11 @@ import {
   AfterStep, applyAfterStepHooks,
 } from './hooks';
 import { renderGherkin } from './render';
+import { DataTable } from '@cucumber/cucumber';
+import { DocString } from './models/doc_string';
 
 export { setWorldConstructor, getWorldConstructor } from './world';
+export { DocString, DataTable }
 
 const featureRegex = /\.feature(?:\.md)?$/;
 
@@ -62,11 +65,28 @@ interface StepDefinitionMatch {
 
 export const qp = async (step: string, state: any, line: number, data?: any): Promise<any> => {
   const stepDefinitionMatch = findStepDefinitionMatch(step);
+
+  // Set the state info
   state.info.step = step
   state.info.line = line
-  applyBeforeStepHooks(state);
-  await stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
-  applyAfterStepHooks(state);
+
+  // Sort out the DataTable or DocString
+  if (Array.isArray(data)) {
+    data = new DataTable(data)
+  }
+  else if (data?.hasOwnProperty('content')) {
+    data = new DocString(data.content, data.mediaType)
+  }
+
+  try {
+    applyBeforeStepHooks(state);
+    await stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
+    applyAfterStepHooks(state);
+  }
+  catch(e:any) {
+    e.message = `${step} (#${line})\n${e.message}`
+    throw e
+  }
 };
 
 const defaultConfig: QuickPickleConfig = {

@@ -15,9 +15,38 @@ Feature: Basic Test
     @tag-test
     Example: The world has info
       Given I run the tests
-      Then the test "feature" should include "Basic Test"
-      And the test "rule" should include "Every step must have access to information about itself"
-      And the test "scenario" should include "The world has info"
-      And the test "tags" should include "@tag-test"
-      And the test "step" should include 'the test "step" should include'
-      And the test "line" should include "23"
+      Then the property "info.feature" should include "Basic Test"
+      And the property "info.rule" should include "Every step must have access to information about itself"
+      And the property "info.scenario" should include "The world has info"
+      And the property "info.tags" should include "@tag-test"
+      And the property "info.step" should include 'the test "step" should include'
+      And the property "info.line" should include "23"
+
+  Rule: DataTables and DocStrings must be as good or better than in @cucumber/cucumber
+    Because why re-invent what is pretty good
+
+    Example: DataTables work
+      Given the following numbers:
+        | 1 |
+        | 2 |
+        | 3 |
+      Then the sum should be 6
+
+    Example: DocStrings work
+      Given the following json:
+        ```
+          [1,2,3]
+        ```
+      When I set "numbers" to the json value
+      Then the sum should be 6
+
+    Example: DocStrings can have a custom mediaType, per Gherkin 6
+      Given the following text:
+        ```md
+          # Title
+
+          This is some markdown text
+        ```
+      Then the value "text" should include "# Title"
+      And the variable "text.mediaType" should be "md"
+      And the typeof "text" should be "object"

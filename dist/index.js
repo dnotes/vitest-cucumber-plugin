@@ -11,8 +11,16 @@ export const When = addStepDefinition;
 export const Then = addStepDefinition;
 export const qp = async (step, state, line, data) => {
     const stepDefinitionMatch = findStepDefinitionMatch(step);
+    // Set the state info
     state.info.step = step;
     state.info.line = line;
+    // // Sort out the DataTable or DocString
+    // if (Array.isArray(data)) {
+    //   data = new DataTable(data)
+    // }
+    // else if (data?.hasOwnProperty('content')) {
+    //   data = data.content
+    // }
     applyBeforeStepHooks(state);
     await stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
     applyAfterStepHooks(state);
