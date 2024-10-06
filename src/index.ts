@@ -11,11 +11,11 @@ import {
 } from './hooks';
 import { renderGherkin } from './render';
 
+export { setWorldConstructor, getWorldConstructor } from './world';
+
 const featureRegex = /\.feature(?:\.md)?$/;
 
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
-
-export { setWorldConstructor, getWorldConstructor } from './world';
 
 export {
   applyBeforeAllHooks,
@@ -31,7 +31,14 @@ export const When = addStepDefinition;
 export const Then = addStepDefinition;
 
 export type QuickPickleConfig = {
-  // Add any specific configuration options here
+
+  /**
+   * The files to be imported for each Feature file.
+   * All step definitions, hooks, world constructor, etc. must be listed.
+   * The value can be a glob pattern or an array of glob patterns.
+   */
+  import: string|string[]
+
 };
 
 interface Step {
@@ -58,32 +65,26 @@ export const qp = (step: string, state: any, line: number, data?: any): any => {
   return stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
 };
 
-interface PluginConfig {
-  root: string;
-  language: string;
-  tagsFunction: (tags: string[]) => boolean;
-  [key: string]: any;
+const defaultConfig: QuickPickleConfig = {
+  import: ['features/*.steps.{ts,js,mjs}']
 }
 
 interface ResolvedConfig {
-  root: string;
   test?: {
-    cucumber?: Partial<PluginConfig>;
+    cucumber?: Partial<QuickPickleConfig>;
   };
 }
 
 export const quickpickle = function() {
-  let config: PluginConfig;
+  let config: QuickPickleConfig;
 
   return {
     name: 'quickpickle-transform',
     configResolved: (resolvedConfig: ResolvedConfig) => {
       config = defaults(
-        { root: resolvedConfig.root, language: 'en' },
+        defaultConfig,
         get(resolvedConfig, 'test.cucumber')
-      ) as PluginConfig;
-
-      config.tagsFunction = tagsFunction(get(config, 'tags'));
+      ) as QuickPickleConfig;
     },
     transform: async (src: string, id: string): Promise<string | undefined> => {
       if (featureRegex.test(id)) {

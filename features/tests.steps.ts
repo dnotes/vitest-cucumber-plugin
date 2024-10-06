@@ -5,6 +5,6 @@ Given("I run the tests", () => {
   console.log("Running tests");
 });
 
-Then("They should pass", () => {
+Then("they should pass", () => {
   expect(true).to.be.true;
 })

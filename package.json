@@ -29,9 +29,8 @@
         "@cucumber/gherkin": "^29.0.0",
         "@cucumber/messages": "^22.0.0",
         "@cucumber/tag-expressions": "^6.1.0",
-        "glob": "^10.2.2",
-        "lodash-es": "^4.17.21",
-        "pino": "^8.11.0"
+        "fast-glob": "^3.3.2",
+        "lodash-es": "^4.17.21"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^24.1.0",

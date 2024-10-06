@@ -1,11 +1,10 @@
 import { addStepDefinition, findStepDefinitionMatch } from './steps';
 import { get, defaults } from 'lodash-es';
-import { tagsFunction } from './tags';
 import { BeforeAll, applyBeforeAllHooks, Before, applyBeforeHooks, AfterAll, applyAfterAllHooks, After, applyAfterHooks, BeforeStep, applyBeforeStepHooks, AfterStep, applyAfterStepHooks, } from './hooks';
 import { renderGherkin } from './render';
+export { setWorldConstructor, getWorldConstructor } from './world';
 const featureRegex = /\.feature(?:\.md)?$/;
 export { BeforeAll, Before, AfterAll, After, BeforeStep, AfterStep };
-export { setWorldConstructor, getWorldConstructor } from './world';
 export { applyBeforeAllHooks, applyBeforeHooks, applyAfterAllHooks, applyAfterHooks, applyBeforeStepHooks, applyAfterStepHooks, };
 export const Given = addStepDefinition;
 export const When = addStepDefinition;
@@ -14,13 +13,15 @@ export const qp = (step, state, line, data) => {
     const stepDefinitionMatch = findStepDefinitionMatch(step);
     return stepDefinitionMatch.stepDefinition.f(state, ...stepDefinitionMatch.parameters, data);
 };
+const defaultConfig = {
+    import: ['features/*.steps.{ts,js,mjs}']
+};
 export const quickpickle = function () {
     let config;
     return {
         name: 'quickpickle-transform',
         configResolved: (resolvedConfig) => {
-            config = defaults({ root: resolvedConfig.root, language: 'en' }, get(resolvedConfig, 'test.cucumber'));
-            config.tagsFunction = tagsFunction(get(config, 'tags'));
+            config = defaults(defaultConfig, get(resolvedConfig, 'test.cucumber'));
         },
         transform: async (src, id) => {
             if (featureRegex.test(id)) {
